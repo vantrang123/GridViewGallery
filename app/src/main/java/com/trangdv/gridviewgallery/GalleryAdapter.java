@@ -1,6 +1,7 @@
 package com.trangdv.gridviewgallery;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
     private ArrayList<Users> users;
     private Context context;
+    private onAdd lintener;
 
-    public GalleryAdapter(ArrayList<Users> users, Context context) {
+    public GalleryAdapter(ArrayList<Users> users, Context context, onAdd lintener) {
         this.users = users;
         this.context = context;
+        this.lintener = lintener;
     }
 
     @Override
@@ -54,6 +57,12 @@ public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
         name.setText(user.getName());
         profession.setText(user.getProfession());
         option.setOnClickListener(this);
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lintener.onClickAdd();
+            }
+        });
         return view;
     }
 
@@ -65,6 +74,7 @@ public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
     private void showOptionMenu(View view) {
         PopupMenu popupMenu=new PopupMenu(context,view);
         popupMenu.getMenuInflater().inflate(R.menu.option_menu,popupMenu.getMenu());
+        popupMenu.setGravity(Gravity.END);
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -81,5 +91,9 @@ public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
                 }
             }
         });
+    }
+
+    public interface onAdd{
+        void onClickAdd();
     }
 }
