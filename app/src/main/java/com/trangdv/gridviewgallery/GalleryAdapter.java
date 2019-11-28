@@ -41,7 +41,7 @@ public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         LayoutInflater layoutInflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view=layoutInflater.inflate(R.layout.custom_gallery_layout,null);
         ImageView photo,option;
@@ -49,18 +49,28 @@ public class GalleryAdapter extends BaseAdapter implements View.OnClickListener{
             photo=new ImageView(context);
         }
         photo=(ImageView)view.findViewById(R.id.photo);
+
         option=(ImageView)view.findViewById(R.id.option);
         TextView name=(TextView)view.findViewById(R.id.name);
         TextView profession=(TextView)view.findViewById(R.id.profession);
-        Users user=users.get(i);
+        final Users user=users.get(i);
         photo.setImageResource(user.getPhoto());
         name.setText(user.getName());
         profession.setText(user.getProfession());
         option.setOnClickListener(this);
-        photo.setOnClickListener(new View.OnClickListener() {
+        /*photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lintener.onClickAdd();
+
+            }
+        });*/
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (i==users.size()-1){
+                    lintener.onClickAdd();
+                }
             }
         });
         return view;
